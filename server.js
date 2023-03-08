@@ -2,17 +2,36 @@
 // http module.
 
 const http = require("http");
-const server = http.createServer((req, res) => {
-  console.log("Request from browser to server");
-  // console.log('123' , req);
-  // console.log(req.method);
+const fs = require('fs');
+const server = http.createServer((req , res) =>{
+  console.log("Request form browser to server");
   // console.log(req.url);
-  res.setHeader("Content-Type", "text/html");
-  res.write("<h1>Hello World</h1>");
-  res.end("Done");
+  // console.log(req.method);
+  res.setHeader('Content-Type' , 'text/html');
+  
+  let path = './views';
+
+  switch(req.url){
+    case '/':
+      path += '/index.html';
+      break;
+    case '/about':
+      path +="/about.html";
+      break;
+    default:
+      path += "/404.html"
+  }
+  fs.readFile(path, (err , file) =>{
+    if(err) {
+        console.log(err);
+    }else{
+      res.write(file);
+      res.end();
+    }
+  })
 });
 
-// port number , host
-server.listen(3000, "localhost", () => {
-  console.log("Server is listinig on port 3000");
+// port no , host name , cb
+server.listen(3000,'localhost' , ()=>{
+  console.log("Server is running on port 3000");
 });
