@@ -3,14 +3,22 @@
 
 const http = require("http");
 const fs = require('fs');
+const _= require('lodash');
 const server = http.createServer((req , res) =>{
   console.log("Request form browser to server");
   // console.log(req.url);
   // console.log(req.method);
   res.setHeader('Content-Type' , 'text/html');
   
-  let path = './views';
 
+  let greet = _.once(() =>{
+    console.log("Hello How Are you");
+  });
+  
+  greet();   // only once execute.
+  greet();
+  
+  let path = './views';
   switch(req.url){
     case '/':
       path += '/index.html';
