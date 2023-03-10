@@ -23,28 +23,70 @@ let user = [
      },
 ];
 
+// Mounting.
+
+const userRouter = express.Router();
+app.use('/user' , userRouter);
+
+userRouter
+     .route("/")
+     .get(getUser)
+     .post(postUser)
+     .patch(updateUser)
+     .delete(deleteUser)
+
+userRouter
+     .route("/:Name")
+     .get(getuserById)
+
 //with query
-app.get('/user' , (req , res) => {
-    
+// app.get('/user' , );
+
+// app.post('/user' , (req , res) =>{
+   
+// });
+
+// app.patch('/user' , (req , res) =>{
+   
+// })
+
+// app.delete('/user' , (req , res) =>{
+//      user = {};
+//      res.json({
+//           massageg :" Data is Deleted"
+//      })
+// })
+
+
+// Parameters.
+
+// app.get('/user/:name' , (req , res) =>{
+     
+// });
+
+function getUser(req , res){   
      console.log(req.query);
      let {Name , age} = req.query;
-     let filterdData = user.filter(userObj =>{
-          return (userObj.Name == Name && userObj.age==age)
-     })
-     res.send(filterdData);
-});
+     // let filterdData = user.filter(userObj =>{
+     //      return (userObj.Name == Name && userObj.age==age)
+     // })
+     // res.send(filterdData);
 
-app.post('/user' , (req , res) =>{
+     res.send(user);
+
+}
+
+function postUser(req  ,res){
      console.log(req.body.Name);
      // then i can put this into db
-     user = req.body;
+     user.push(req.body);
      res.json({
           massage : "Data is recived succesfully",
           user : req.body
      });
-});
+}
 
-app.patch('/user' , (req , res) =>{
+function updateUser(req , res){
      console.log(req.body);
      let userdataToUpdate = req.body;
      for(key in userdataToUpdate){
@@ -53,25 +95,21 @@ app.patch('/user' , (req , res) =>{
      res.json({
           massage : "User Data is Updated"        
      })
-})
+}
 
-app.delete('/user' , (req , res) =>{
+function deleteUser(req , res){
      user = {};
      res.json({
-          massageg :" Data is Deleted"
-     })
-})
+         msg: "user has been deleted"
+     });
+}
 
-
-// Parameters.
-
-app.get('/user/:name' , (req , res) =>{
+function getuserById(req, res){
      console.log(req.params.name);
      // let {id} = req.params;
      // let user = db.findOne(id);
      res.json({
           msg:"user id is", "obj":req.params 
      })
-});
-
+}
 app.listen(5000);
