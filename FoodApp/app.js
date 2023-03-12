@@ -2,6 +2,11 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
+// MongoDB
+const mongooes = require('mongoose');
+const {data_link} = require('./secret')
+console.log(data_link);
+
 let user = [
      {
           id :1,
@@ -32,7 +37,7 @@ app.use('/auth' , authRouter);
 
 userRouter
      .route("/")
-     .get(getUser)
+     .get(middleware1 , getUser , middleware2)
      .post(postUser)
      .patch(updateUser)
      .delete(deleteUser)
@@ -42,8 +47,18 @@ userRouter.route("/:Name").get(getuserById);
 
 authRouter.route('/signup').get(getSignup).post(postSignup)
 
+function middleware1(req , res , next){
+     console.log("Middleware 1 called");
+     next();
+}
 
-function getUser(req , res){   
+function middleware2(req , res){
+     console.log("Middleware2 is called");
+
+     res.json({msg:"user returned"});
+}
+
+function getUser(req , res , next){   
      console.log(req.query);
      let {Name , age} = req.query;
      // let filterdData = user.filter(userObj =>{
@@ -51,7 +66,9 @@ function getUser(req , res){
      // })
      // res.send(filterdData);
 
-     res.send(user);
+     // res.send(user);  
+     console.log("getUser called");
+     next();
 
 }
 
@@ -83,13 +100,16 @@ function deleteUser(req , res){
      });
 }
 
-function getuserById(req, res){
+function getuserById(req, res ){
      console.log(req.params.name);
      // let {id} = req.params;
      // let user = db.findOne(id);
      res.json({
           msg:"user id is", "obj":req.params
      });
+     
+
+     
 }
 
 function getSignup(req,res){
@@ -107,3 +127,12 @@ function postSignup(req , res){
      })
 }
 app.listen(5000);
+
+mongooes.connect(data_link)
+     .then(function (db){
+          console.log("db connected");
+          // console.log(db);
+     })
+     .catch(function (err){
+          console.log(err);
+     })
