@@ -26,7 +26,9 @@ let user = [
 // Mounting.
 
 const userRouter = express.Router();
+const authRouter = express.Router();
 app.use('/user' , userRouter);
+app.use('/auth' , authRouter);
 
 userRouter
      .route("/")
@@ -35,9 +37,10 @@ userRouter
      .patch(updateUser)
      .delete(deleteUser)
 
-userRouter
-     .route("/:Name")
-     .get(getuserById)
+
+userRouter.route("/:Name").get(getuserById);
+
+authRouter.route('/signup').get(getSignup).post(postSignup)
 
 
 function getUser(req , res){   
@@ -86,6 +89,21 @@ function getuserById(req, res){
      // let user = db.findOne(id);
      res.json({
           msg:"user id is", "obj":req.params
+     });
+}
+
+function getSignup(req,res){
+     res.sendFile("/public/index.html" , {root: __dirname});
+}
+
+function postSignup(req , res){
+     let {email , name , password} = req.body;
+     console.log(req.body);
+     res.json({
+          msg:"user Signed up",
+          email,
+          name , 
+          password
      })
 }
 app.listen(5000);
