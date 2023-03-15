@@ -4,7 +4,7 @@ const userModel = require('../models/userModel');
 
 userRouter
   .route("/")
-  .get(getUser)
+  .get(protectRoute , getUser)
   .post(postUser)
   .patch(updateUser)
   .delete(deleteUser);
@@ -20,9 +20,18 @@ function middleware1(req, res, next) {
   next();
 }
 
+function protectRoute(req , res , next){
+     if(req.cookie.isLoggedIn){
+          next();
+     }else{
+          return res.json({
+               msg : "Operation not Allowed"
+          });
+     }
+}
 async function getUser(req, res) {
   console.log(req.query);
-  let { Name, age } = req.query;
+//   let { Name, age } = req.query;
   // let filterdData = user.filter(userObj =>{
   //      return (userObj.Name == Name && userObj.age==age)
   // })
@@ -32,7 +41,8 @@ async function getUser(req, res) {
   console.log("getUser called");
   // next();
 
-  let allUser = await userModel.findOne({ name: "Dani" });
+//   let allUser = await userModel.findOne({ name: "Dani" });
+     let allUser = await userModel.find();
   res.json({
     msg: "user Retrive",
     allUser,
