@@ -3,6 +3,8 @@ const { model } = require("mongoose");
 const authRouter = express.Router();
 const userModel = require("../models/userModel");
 
+var jwt = require('jsonwebtoken');
+const JWT_KEY = 'zdsfxcg234w5e6cg'
 authRouter
      .route("/signup")
      .get(getSignup)
@@ -42,7 +44,9 @@ async function loginUser(req , res){
                // check if password match.
                // bcrypt
                if(password == user.password){
-                    res.cookie('isLoggedIn' , true);
+                    let uid = user["_id"];
+                    var token = jwt.sign({payload:uid} , JWT_KEY);
+                    res.cookie('login' , token);
                    res.json({
                     msg : "user logged in"
                    });

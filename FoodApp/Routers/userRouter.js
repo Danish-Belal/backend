@@ -1,7 +1,8 @@
 const express = require("express");
 const userRouter = express.Router();
 const userModel = require('../models/userModel');
-
+var jwt = require("jsonwebtoken");
+const JWT_KEY = "zdsfxcg234w5e6cg";
 userRouter
   .route("/")
   .get(protectRoute , getUser)
@@ -21,8 +22,15 @@ function middleware1(req, res, next) {
 }
 
 function protectRoute(req , res , next){
-     if(req.cookie.isLoggedIn){
-          next();
+     if(req.cookies.login){
+          let token = req.cookies.login;
+          let isVerfied = jwt.verify(token , JWT_KEY);
+          if(isVerfied) next();
+          else{
+               req.json({
+                    msg:'user not verified'
+               })
+          }
      }else{
           return res.json({
                msg : "Operation not Allowed"
