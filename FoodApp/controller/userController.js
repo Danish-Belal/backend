@@ -1,10 +1,10 @@
 
-const userModel = require('../models/userModel');
+const userModel = require("../models/userModel");
 
 module.exports.getUser = async function (req, res) {
 
   try{
-    let id  =req.params.id;
+    let id  =req.id;
     let user = await userModel.findById(id);
     res.json({msg:"user Retrived" , user});
 
@@ -14,23 +14,17 @@ module.exports.getUser = async function (req, res) {
       msg:err.msg
     });
   }
-
-    let allUser = await userModel.find();
-  res.json({
-    msg: "user Retrive",
-    allUser,
-  });
-}
-
-module.exports.postUser = function (req, res) {
-  console.log(req.body.Name);
-  // then i can put this into db
-  user.push(req.body);
-  res.json({
-    massage: "Data is recived succesfully",
-    user: req.body,
-  });
 };
+
+// module.exports.postUser = function (req, res) {
+//   console.log(req.body.Name);
+//   // then i can put this into db
+//   user.push(req.body);
+//   res.json({
+//     massage: "Data is recived succesfully",
+//     user: req.body,
+//   });
+// };
 
 module.exports.updateUser = async function (req, res) {
   console.log(req.body);
@@ -46,11 +40,12 @@ module.exports.updateUser = async function (req, res) {
       }
       for(let i =0; i<keys.length ; i++){
         user[keys[i]] = dataToBeUpdated[keys[i]]
+        //name=Danish
       }
       const updatedData = await user.save();
       res.json({
         msg: "Data updated succesfully",
-        updatedData
+        updatedData,
       });  
     }
     else{
@@ -63,8 +58,7 @@ module.exports.updateUser = async function (req, res) {
     res.json({
       massage:err.massage
     })
-  }
-  
+  } 
 };
 
 module.exports.deleteUser = async function (req, res) {
@@ -72,7 +66,7 @@ module.exports.deleteUser = async function (req, res) {
   try {
     let id = req.params.id;
     let user = await userModel.findOneAndDelete(id);
-    res.json({ msg: "User has been deleted" , user});
+    res.json({ msg: "User has been deleted" , user,});
   } 
   catch (err) {
     console.error(err);
@@ -94,7 +88,7 @@ module.exports.getuserById = function (req, res) {
     let allUser = await userModel.find();
     res.json({
       msg:"user id is",
-      allUser
+      allUser,
     });
   }
   catch(err){
@@ -102,4 +96,4 @@ module.exports.getuserById = function (req, res) {
       msg:err.massage,
     });
   }
- }
+ };
