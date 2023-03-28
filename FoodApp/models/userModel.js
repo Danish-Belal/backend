@@ -43,6 +43,15 @@ const userSchema = mongooes.Schema({
       return this.confirmPassword == this.password;
     },
   },
+  role:{
+    type : String,
+    enum:['admin' , 'user' , 'restaurentowner' , 'deliveryboy'],
+    defaul : 'user'
+  },
+  profileImage :{
+    type : String,
+    default:'img/user/default.jpg'
+  }
 });
 
 // Hooks .

@@ -1,28 +1,26 @@
 const express = require("express");
 const userRouter = express.Router();
 
-const {getUser , postUser , updateUser,deleteUser , getuserById , setCookies,getCookies} = require('../controller/userController')
+const {getUser , postUser , updateUser,deleteUser , getAlluser} = require('../controller/userController')
 const {protectRoute} = require('../helper')
 
+// user's option
 userRouter
-  .route("/")
-  .get(protectRoute , getUser)
-  .post(postUser)
+  .route("/:id")
   .patch(updateUser)
   .delete(deleteUser);
 
-userRouter.route("/setcookies").get(setCookies);
 
-userRouter.route("/getCookies").get(getCookies);
-
-userRouter.route("/:Name").get(getuserById);
-
-// function middleware1(req, res, next) {
-//   console.log("Middleware 1 called");
-//   next();
-// }
+  // profile page
+app.use(protectRoute)
+userRouter
+  .route('/userProfile')
+  .get(getUser)
 
 
-
+// admin specific function.
+app.use(isAuthorised(['admin']));
+userRouter.route('')
+.get(getAlluser)
 
    module.exports = userRouter;

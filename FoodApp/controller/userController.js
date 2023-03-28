@@ -2,19 +2,20 @@
 const userModel = require('../models/userModel');
 
 module.exports.getUser = async function (req, res) {
-  console.log(req.query);
-//   let { Name, age } = req.query;
-  // let filterdData = user.filter(userObj =>{
-  //      return (userObj.Name == Name && userObj.age==age)
-  // })
-  // res.send(filterdData);
 
-  // res.send(user);
-  console.log("getUser called");
-  // next();
+  try{
+    let id  =req.params.id;
+    let user = await userModel.findById(id);
+    res.json({msg:"user Retrived" , user});
 
-//   let allUser = await userModel.findOne({ name: "Dani" });
-     let allUser = await userModel.find();
+  }
+  catch(err){
+    res.json({
+      msg:err.msg
+    });
+  }
+
+    let allUser = await userModel.find();
   res.json({
     msg: "user Retrive",
     allUser,
@@ -33,34 +34,47 @@ module.exports.postUser = function (req, res) {
 
 module.exports.updateUser = async function (req, res) {
   console.log(req.body);
-  let userdataToUpdate = req.body;
-  // for(key in userdataToUpdate){
-  //      user[key] = userdataToUpdate[key];
-  // }
-  let doc = await userModel.findOneAndUpdate(
-    { email: "danishbe@gmail.com" },
-    userdataToUpdate
-  );
-  console.log(doc);
-  res.json({
-    massage: "User Data is Updated",
-  });
+  let id = req.params.id;
+  let user = await userModel.findById(id);
+  let dataToBeUpdated = req.body;
+
+  try{
+    if(user){
+      const keys = [];  // ['name' , 'email']
+      for(let key in dataToBeUpdated){
+        key.push(key)
+      }
+      for(let i =0; i<keys.length ; i++){
+        user[keys[i]] = dataToBeUpdated[keys[i]]
+      }
+      const updatedData = await user.save();
+      res.json({
+        msg: "Data updated succesfully",
+        updatedData
+      });  
+    }
+    else{
+      res.json({
+        msg : "User Not Found",
+      });
+    }
+  }
+  catch(err){
+    res.json({
+      massage:err.massage
+    })
+  }
+  
 };
 
 module.exports.deleteUser = async function (req, res) {
-  // user = {};
-  //     let doc = await userModel.findOneAndRemove({ email: "danishbelal@gmail.com" });
-  // let doc = await userModel.findOneAndDelete({email:"danishbellasl@gmail.com"})
-
+ 
   try {
-    const user = await userModel.deleteOne({ email: "Arbazbali@gmail.com" });
-    if (!user) {
-      return res.status(404).json({ msg: "User not found" });
-    }
-    //  const del = await user.remove();
-    //  console.log(del);
-    res.json({ msg: "User has been deleted" });
-  } catch (err) {
+    let id = req.params.id;
+    let user = await userModel.findOneAndDelete(id);
+    res.json({ msg: "User has been deleted" , user});
+  } 
+  catch (err) {
     console.error(err);
     res.status(500).json({ msg: "Server error" });
   }
@@ -75,16 +89,17 @@ module.exports.getuserById = function (req, res) {
     obj: req.params,
   });
 };
-
-module.exports.setCookies = function (req, res) {
-  // res.setHeader('Set-Cookie' , 'isLoggedIn  =true');
-  res.cookie("isLoggedIn", false, { maxAge: 10000, secure: true });
-  res.cookie("password", 12345, { secure: true });
-  res.send("Cookies has been set");
-};
-
-module.exports.getCookies = function (req, res) {
-  let cookie = req.cookies.password;
-  console.log(cookie);
-  res.send("Cookies recived");
-};
+ module.exports.getAllUser = async function(req , res){
+  try{
+    let allUser = await userModel.find();
+    res.json({
+      msg:"user id is",
+      allUser
+    });
+  }
+  catch(err){
+    res.json({
+      msg:err.massage,
+    });
+  }
+ }
