@@ -1,4 +1,5 @@
 
+const { use } = require("../Routers/userRouter");
 const userModel = require("../models/userModel");
 
 module.exports.getUser = async function (req, res) {
@@ -42,6 +43,7 @@ module.exports.updateUser = async function (req, res) {
         user[keys[i]] = dataToBeUpdated[keys[i]]
         //name=Danish
       }
+      console.log("abcd" , user);
       const updatedData = await user.save();
       res.json({
         msg: "Data updated succesfully",

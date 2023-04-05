@@ -2,7 +2,7 @@ const mongooes = require('mongoose');
 const {data_link} = require('../secret');
 const emailValidator = require('email-validator')
 const bcrypt = require('bcrypt')
-
+// import { v4 as uuidv4 } from "uuid";
 
 mongooes
   .connect(data_link)
@@ -51,7 +51,8 @@ const userSchema = mongooes.Schema({
   profileImage :{
     type : String,
     default:'img/user/default.jpg'
-  }
+  },
+  resetToken:String
 });
 
 // Hooks .
@@ -88,6 +89,18 @@ userSchema.pre('save' , async function(){
      console.log(hasedString);
 })
 
+
+userSchema.methods.createResetToken = function(){
+  const resetToken = uuidv4();
+  this.resetToken = resetToken;
+  return resetToken;
+}
+
+userSchema.methods.resetPasswordHandler = function (password , confirmPassword){
+  this.password = password;
+  this.confirmPassword = confirmPassword;
+  this.resetToken = undefined;
+}
 // Models
 const userModel = mongooes.model("userModel", userSchema);
 module.exports = userModel
