@@ -1,7 +1,7 @@
 const express = require("express");
 const userRouter = express.Router();
 
-const {getUser , postUser , updateUser,deleteUser , getAlluser} = require('../controller/userController')
+const {getUser , postUser , updateUser,deleteUser , allUsers} = require('../controller/userController')
 const {isAuthorised    ,protectRoute} = require('../helper')
 const {signup , login} = require('../controller/authController');
 // user's option
@@ -23,7 +23,7 @@ userRouter
   // profile page
 userRouter.use(protectRoute)
 userRouter
-  .route('/userProfile')
+  .route('/profile')
   .get(getUser)
 
 
@@ -36,11 +36,10 @@ userRouter
 
 // admin specific function.
 userRouter.use(isAuthorised(['admin']));
-userRouter.route('')
-  .get((req, res) => {
-    // callback function to handle the GET request
-    getAlluser(req, res);
-  });
-
+userRouter
+  .route('/')
+  .get(allUsers)
+  
+   
 
    module.exports = userRouter;
