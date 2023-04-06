@@ -2,7 +2,7 @@ const mongooes = require('mongoose');
 const {data_link} = require('../secret');
 const emailValidator = require('email-validator')
 const bcrypt = require('bcrypt')
-// import { v4 as uuidv4 } from "uuid";
+const uuidv4 = require("uuid");
 
 mongooes
   .connect(data_link)

@@ -3,8 +3,8 @@ const userRouter = express.Router();
 
 const {getUser , postUser , updateUser,deleteUser , allUsers} = require('../controller/userController')
 const {isAuthorised    ,protectRoute} = require('../helper')
-const {signup , login} = require('../controller/authController');
-const {forgetpassword , resetpassword} = require('../Routers/authRouter') 
+const {signup , login ,forgetpassword , resetpassword , logout} = require('../controller/authController');
+
 // user's option
 userRouter
   .route("/:id")
@@ -30,26 +30,19 @@ userRouter
   userRouter
     .route('/logout')
     .get(logout)
-  // profile page
+ 
+    // profile page
 userRouter.use(protectRoute)
 userRouter
   .route('/profile')
   .get(getUser)
 
-
-  // sir code with is not working .
-// admin specific function.
-// userRouter.use(isAuthorised(['admin']));
-// userRouter.route('')
-//   .get(getAlluser)
-
-
 // admin specific function.
 userRouter.use(isAuthorised(['admin']));
-userRouter
-  .route('/')
+userRouter.route('/')
   .get(allUsers)
-  
+
+
    
 
    module.exports = userRouter;
