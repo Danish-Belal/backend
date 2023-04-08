@@ -3,15 +3,16 @@ const app = express();
 
 const cookieParser = require("cookie-parser")
 const userRouter = require('./Routers/userRouter')
-const authRouter = require('./Routers/authRouter')
+const planRouter = require('./Routers/planRouter');
+
 app.use(express.json());
 app.use(cookieParser());
 
 
 
 app.use("/user", userRouter);
-app.use("/auth", authRouter);
+app.use("/plan" , planRouter)
 
-const planModel = require("./models/planModel")
+
 app.listen(5000);
 

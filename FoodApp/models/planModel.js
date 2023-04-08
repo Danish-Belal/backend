@@ -5,7 +5,7 @@ const {data_link} = require('../secret');
 mongooes
   .connect(data_link)
   .then(function (db) {
-    console.log("db connected");
+    console.log("Plan DB connected");
     // console.log(db);
   })
   .catch(function (err) {
@@ -41,18 +41,18 @@ mongooes
   const planModel = mongooes.model("planModel" , planSchem);
   module.exports = planModel;
 
-  (async function createPlan(){
-    let plan = {
-      name: "Strict diet",
-      duration :30,
-      price:9000,
-      ratingsAverages : 4.8,
-      discount:15
-    }
+  // (async function createPlan(){
+  //   let plan = {
+  //     name: "Strict fast food",
+  //     duration :300,
+  //     price:90000,
+  //     ratingsAverages : 4.9,
+  //     discount:15
+  //   }
 
   
-    let data = await planModel.create(plan);
-    console.log(data);
-    // const doc = new planModel(plan);
-    // await doc.save();
-  })();
+  //   let data = await planModel.create(plan);
+  //   console.log(data);
+  //   // const doc = new planModel(plan);
+  //   // await doc.save();
+  // })();

@@ -7,7 +7,7 @@ const uuidv4 = require("uuid");
 mongooes
   .connect(data_link)
   .then(function (db) {
-    console.log("db connected");
+    console.log("User DB connected");
     // console.log(db);
   })
   .catch(function (err) {
