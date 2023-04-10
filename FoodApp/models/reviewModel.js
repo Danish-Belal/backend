@@ -46,13 +46,14 @@ const revieSchema =new mongooes.Schema({
 // find , findbyid , findone , findoneandupdate
 revieSchema.pre(/^find/ , function(next){
      this.populate({
-          path : 'user',
+          path : "user",
           select : "name profileImage"
      }).populate("plan");
      next();
-})
+});
 
 
 
 const reviewModel  = mongooes.model('Review' , revieSchema);
 module.exports = reviewModel;
+

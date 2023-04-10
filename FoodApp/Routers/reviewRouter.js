@@ -11,19 +11,18 @@ reviewRouter
      .route("/top3")
      .get(top3Review)
 
-reviewRouter.use(protectRoute);
-reviewRouter
-     .route('/:id')
-     .get(getPlanReview);
 
+reviewRouter.use(protectRoute)
 reviewRouter
-     .route(" ")
-     .post(createReview);
-
-reviewRouter.use(isAuthorised(['admin' , 'restaurentowner']))
-reviewRouter
-     .route("")
+     .route("/curd/:plan")
+     .post(createReview)
      .patch(updateReview)
-     .delete(deleteReview);
+     .delete(deleteReview)
+
+
+     
+reviewRouter
+.route('/:id')
+.get(getPlanReview);
 
 module.exports = reviewRouter;
