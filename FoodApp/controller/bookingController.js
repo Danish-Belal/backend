@@ -14,7 +14,7 @@ module.exports.createSession = async function (req, res) {
  
          const session = await stripe.checkout.sessions.create({
           // Need to mention few keys explicitly  
-          payment_method_types: ["card"],
+          // payment_method_types: ["card"],
          //   customer_email: user.email,
          //   client_reference_id: plan.id,
          line_items: [
@@ -34,10 +34,10 @@ module.exports.createSession = async function (req, res) {
            success_url: `${req.protocol}://${req.get("host")}/profile`,
            cancel_url: `${req.protocol}://${req.get("host")}/profile`,
          });
-         res.json({
-             msg: "success",
-             session
-         });
+        //  res.json({
+        //      msg: "success",
+        //      session
+        //  });
          res.redirect(303, session.url);
      }
      catch (err) {
