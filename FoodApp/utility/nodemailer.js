@@ -22,33 +22,106 @@ module.exports.sendMail = async function (context , user) {
     let eSubj="" , eHtml="";
     if(context == 'signup'){
       eSubj = `Thank You 🙌 for signing ${user.name}`;
-      eHtml = `
-            <h1>Welcome to FoodApp.com
-            Hope you have a great experiance!
-
-            Here are your details:
-            Name:- ${user.name}
-            Email:- ${user.email}
-
-            Thank You!
-
-                                  FoodApp Developer
-                                  Danish Belal
-            `;
+  eHtml = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+          }
+          
+          h1 {
+            color: #333;
+          }
+          
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+          }
+          
+          .details {
+            margin-bottom: 20px;
+          }
+          
+          .bold {
+            font-weight: bold;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Welcome to FoodApp.com</h1>
+          <p>Hope you have a great experience!</p>
+          
+          <div class="details">
+            <p class="bold">Here are your details:</p>
+            <p><span class="bold">Name:</span> ${user.name}</p>
+            <p><span class="bold">Email:</span> ${user.email}</p>
+          </div>
+          
+          <p>Thank You!</p>
+          
+          <p>
+            FoodApp Developer<br />
+            Danish Belal
+          </p>
+        </div>
+      </body>
+    </html>
+  `;
     }else if(context == "forgetpassword"){
       eSubj = `Reset Password`;
       eHtml = `
-          <h1>FoodApp.com</h1>
-          Here is yout link to reset password : 
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+            }
             
-          ${user.resetpasswordLink}
-
-          Thankyou!
-
-                                    FoodAPp Developer 
-                                    Danish Belal
-
-      `;
+            h1 {
+              color: #333;
+            }
+            
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              background-color: #f9f9f9;
+            }
+            
+            .reset-link {
+              margin-bottom: 20px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>FoodApp.com</h1>
+            <p>Here is your link to reset your password:</p>
+            
+            <div class="reset-link">
+              <a href="${user.resetpasswordLink}">${user.resetpasswordLink}</a>
+            </div>
+            
+            <p>Thank you!</p>
+            
+            <p>
+              FoodApp Developer<br />
+              Danish Belal
+            </p>
+          </div>
+        </body>
+      </html>
+    `;
     }
     // send mail with defined transport object
     let info = await transporter.sendMail({
