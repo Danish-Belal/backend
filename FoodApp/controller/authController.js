@@ -64,18 +64,20 @@ module.exports.login = async function (req, res) {
 module.exports.forgetpassword = async function(req,res){
   try{
     let {email} = req.body;
-    const user = userModel.findOne({email:email});
+    const user = await userModel.findOne({email:email});
     if(user){
       // reset token 
     
-      const resetToken = user.createResetToken();
+      const resetToken = await user.createResetToken();
       //creating link
       // https://xyz.com/resetpassword/resetToken
-      let resetpasswordLink = `${req.protocol}://${req.get('host')}/resetpassword/${resetToken}`;
+      let resetpasswordLink = `${req.protocol}://${req.get('host')}/user/resetpassword/${resetToken}`;
       // send this to user
       // nodemailer
-      await sendMail('forgetpassword' , {user,resetpasswordLink});
-     
+      await sendMail('forgetpassword' , {email,resetpasswordLink});
+     res.json({
+      mag : "email send succesfully"
+     })
     }else{
       res.json({
         msg : "user not found"
@@ -93,11 +95,12 @@ module.exports.forgetpassword = async function(req,res){
 module.exports.resetpassword = async function(req,res){
   try{
       const token = req.params.token;
-      let {password , confirmPassword} = req.body;
+      console.log("05833", token);
+      let {password , confirmpassword} = req.body;
       const user = await userModel.findOne({resetToken : token});
       if(user){
         //resetPasswordHandler will update user in DB
-        user.resetPasswordHandler(password , confirmPassword);
+        user.resetPasswordHandler(password , confirmpassword);
         await user.save();
         res.json({
           msg:"Password changed succesfully",

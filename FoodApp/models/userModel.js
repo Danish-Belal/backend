@@ -2,7 +2,7 @@ const mongooes = require('mongoose');
 const {data_link} = require('../secret');
 const emailValidator = require('email-validator')
 const bcrypt = require('bcrypt')
-const uuidv4 = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 
 mongooes
   .connect(data_link)
@@ -36,7 +36,7 @@ const userSchema = mongooes.Schema({
   },
   confirmPassword: {
     type: String,
-    required: true,
+    // required: true,
     unoque: true,
     minLength: 7,
     validate: function(){
@@ -90,11 +90,12 @@ userSchema.pre('save' , async function(){
 })
 
 
-userSchema.methods.createResetToken = function(){
+userSchema.methods.createResetToken =async  function(){
   const resetToken = uuidv4();
   this.resetToken = resetToken;
+  await this.save();
   return resetToken;
-}
+};
 
 userSchema.methods.resetPasswordHandler = function (password , confirmPassword){
   this.password = password;
