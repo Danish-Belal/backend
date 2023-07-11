@@ -6,7 +6,7 @@ module.exports.getAllReviews =async function(req,res){
           let allreviews =await reviewModel.find();
           if(allreviews){
                return res.json({
-                    msg : "review recived",
+                    msg : "All reviews recived",
                     allreviews,
                });
           }else{
@@ -45,28 +45,25 @@ module.exports.top3Review =async function(req,res){
 }
 
 module.exports.getPlanReview =async function(req,res){
-     try{
-         const planId  = req.params.id;
-         let reviews = await reviewModel.find()
-         reviews = reviews.filter(review => review.plan["_id"] == planId);
-         if(reviews){
-          return res.json({
-               msg : "reviews retrived",
-               reviews,
-          });
-         }
-         else{
-          return res.json({
-               msg : "reviews not found",
-          });
-         }
-     }
-     catch(err){
-          res.json({
-               msg : err.msg
+     try {
+          let planId = req.params.plan;
+          let allReviews = await reviewModel.find();
+          let planReviews = allReviews.filter((review) => {
+              return review.plan["_id"] == planId;
           })
-     }
-    
+          if(planReviews) {
+              res.json({
+                  msg: "Plan reviews are retrieved!",
+                  planReviews
+              })
+          } else {
+              res.json({
+                  msg: "Review NOT found!"
+              })
+          }
+      } catch(err) {
+          res.json({ err: err.message });
+      }
 
 }
 module.exports.createReview =async function(req,res){

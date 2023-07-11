@@ -85,7 +85,8 @@ module.exports.getuserById = function (req, res) {
     obj: req.params,
   });
 };
- module.exports.allUsers = async function(req , res){
+
+module.exports.allUsers = async function(req , res){
   try{
     let allUser = await userModel.find();
     res.json({
@@ -98,4 +99,4 @@ module.exports.getuserById = function (req, res) {
       msg:err.massage,
     });
   }
- };
+};

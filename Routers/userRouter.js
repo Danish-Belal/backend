@@ -34,10 +34,14 @@ userRouter
     // profile page
 userRouter.use(protectRoute)
 userRouter
-  .route('/profile')
+  .route('/profilePage')
   .get(getUser)
+  
+userRouter
+  .route('user/id')
+  .patch(updateUser)
 
-// admin specific function.
+ // admin specific function.
 userRouter.use(isAuthorised(['admin']));
 userRouter.route('/')
   .get(allUsers)

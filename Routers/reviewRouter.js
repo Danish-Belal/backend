@@ -14,7 +14,7 @@ reviewRouter
 
 reviewRouter.use(protectRoute)
 reviewRouter
-     .route("/curd/:plan")
+     .route("/crud/:plan")
      .post(createReview)
      .patch(updateReview)
      .delete(deleteReview)

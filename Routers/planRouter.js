@@ -4,7 +4,7 @@ const planRouter = express.Router();
 
 const {getAllPlans , getPlan , createPlan , updatePlan , deletePlan , top3Plans} = require('../controller/planCountroller')
 planRouter
-     .route('/all')
+     .route('/allPlans')
      .get(getAllPlans)
 
 planRouter
@@ -14,7 +14,7 @@ planRouter
 
 planRouter.use(protectRoute) // is logged in 
 planRouter
-     .route('single/:id')
+     .route('planDetail/:id')
      .get(getPlan)
 
 planRouter.use(isAuthorised(['admin' , 'restaurentowner']))  // logged in , lkin role

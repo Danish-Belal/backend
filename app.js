@@ -19,7 +19,7 @@ const bookingRouter = require('./Routers/bookingRouter');
 
 
 app.use("/user", userRouter);
-app.use("/plan" , planRouter);
+app.use("/plans" , planRouter);
 app.use("/review" , reviewRouter);
 app.use('/booking', bookingRouter);
 
