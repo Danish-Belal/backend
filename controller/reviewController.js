@@ -46,23 +46,25 @@ module.exports.top3Review =async function(req,res){
 
 module.exports.getPlanReview =async function(req,res){
      try {
-          let planId = req.params.plan;
-          let allReviews = await reviewModel.find();
-          let planReviews = allReviews.filter((review) => {
-              return review.plan["_id"] == planId;
-          })
-          if(planReviews) {
-              res.json({
+          let planId = req.params.id;
+          let reviews = await reviewModel.find();
+          reviews = reviews.filter(review => {
+              // Check if review.plan is not null before accessing its _id property
+              return review.plan && review.plan["_id"] == planId;
+          });
+  
+          if (reviews.length > 0) {
+              return res.json({
                   msg: "Plan reviews are retrieved!",
-                  planReviews
-              })
+                  reviews
+              });
           } else {
-              res.json({
+              return res.json({
                   msg: "Review NOT found!"
-              })
+              });
           }
-      } catch(err) {
-          res.json({ err: err.message });
+      } catch (err) {
+          return res.json({ err: err.message });
       }
 
 }
