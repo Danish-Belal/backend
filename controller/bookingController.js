@@ -25,7 +25,7 @@ module.exports.createSession = async function (req, res) {
                   unit_amount: 20 * 100,
                   product_data: {
                       description: "My Testing PLan Desc.",
-                      name: "My Testing PLan"
+                      name: "My Testing Plan"
                   },
               }
           },
