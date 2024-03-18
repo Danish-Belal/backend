@@ -38,7 +38,7 @@ userRouter
   .get(getUser)
   
 userRouter
-  .route('user/id')
+  .route('user/:id')
   .patch(updateUser)
 
  // admin specific function.
