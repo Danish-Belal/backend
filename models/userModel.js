@@ -50,7 +50,7 @@ const userSchema = mongooes.Schema({
   },
   profileImage :{
     type : String,
-    default:'img/user/default.jpg'
+    default:'../Images/User.jpg'
   },
   resetToken:String
 });
