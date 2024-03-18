@@ -43,6 +43,7 @@ module.exports.login = async function (req, res) {
         res.cookie("login", token);
         res.json({
           msg: "user logged in",
+          user: user
         });
       } else {
         res.json({
