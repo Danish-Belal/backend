@@ -28,17 +28,18 @@ module.exports.getUser = async function (req, res) {
 // };
 
 module.exports.updateUser = async function (req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   let id = req.params.id;
   let user = await userModel.findById(id);
   let dataToBeUpdated = req.body;
-
+  console.log(user);
   try{
     if(user){
       const keys = [];  // ['name' , 'email']
-      for(let key in dataToBeUpdated){
-        key.push(key)
+      for(key in dataToBeUpdated){
+        keys.push(key)
       }
+      console.log(keys);
       for(let i =0; i<keys.length ; i++){
         user[keys[i]] = dataToBeUpdated[keys[i]]
         //name=Danish
