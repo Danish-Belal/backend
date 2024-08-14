@@ -37,7 +37,7 @@ const userSchema = mongooes.Schema({
   confirmPassword: {
     type: String,
     // required: true,
-    unoque: true,
+    unique: true,
     minLength: 7,
     validate: function(){
       return this.confirmPassword == this.password;

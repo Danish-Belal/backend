@@ -3,6 +3,8 @@ var jwt = require("jsonwebtoken");
 const { JWT_KEY } = require('../secret');
 const {use} = require('../Routers/userRouter');
 const { sendMail } = require("../utility/nodemailer");
+// const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 console.log("123" , JWT_KEY);
 
 module.exports.signup = async function (req, res) {
@@ -35,15 +37,14 @@ module.exports.login = async function (req, res) {
     let { email, password } = req.body;
     let user = await userModel.findOne({ email: email });
     if (user) {
-      // check if password match.
-      // bcrypt
-      if (password == user.password) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (isMatch) {
         let uid = user["_id"];
         var token = jwt.sign({ payload: uid }, JWT_KEY);
         res.cookie("login", token);
         res.json({
           msg: "user logged in",
-          user: user
+          user: user,
         });
       } else {
         res.json({
