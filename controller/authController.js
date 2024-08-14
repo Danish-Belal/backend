@@ -37,7 +37,7 @@ module.exports.login = async function (req, res) {
     let { email, password } = req.body;
     let user = await userModel.findOne({ email: email });
     if (user) {
-      const isMatch = await bcrypt.compare(password, user.password);
+      const isMatch = await bcrypt.compare(password, user.password); 
       if (isMatch) {
         let uid = user["_id"];
         var token = jwt.sign({ payload: uid }, JWT_KEY);
